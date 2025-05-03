@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "echoflow"
-authors = [{name="Yajun", email="skyblueice234@gmail.com"}]
+authors = [{ name = "Yajun", email = "skyblueice234@gmail.com" }]
 dynamic = ["version"]
 description = "An open source framework for voice assistants compatible with Tenagent"
 readme = "README.md"
@@ -19,25 +19,34 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence"
 ]
 dependencies = [
-    "aiohttp~=3.11.12",
 ]
 
 [project.urls]
 Source = "https://github.com/yinyajun/echoflow"
 
 [project.optional-dependencies]
-anthropic = [ "anthropic~=0.49.0" ]
-assemblyai = [ "assemblyai~=0.37.0" ]
+anthropic = ["anthropic~=0.49.0"]
 
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-"pipecat" = ["py.typed"]
+"echoflow" = ["py.typed"]
+
+[tool.pytest.ini_options]
+addopts = "--verbose"
+testpaths = ["tests"]
+pythonpath = ["src"]
+filterwarnings = []
 
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
 fallback_version = "0.0.0-dev"
 
+
+[tool.coverage.run]
+command_line = "-m pytest"
+source = ["src"]
+omit = ["*/tests/*"]
