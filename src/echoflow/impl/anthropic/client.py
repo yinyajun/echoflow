@@ -5,7 +5,7 @@ from typing import AsyncGenerator, Literal
 from echoflow.impl.anthropic.messages import AnthropicDynamicMessages, AnthropicStaticMessages
 from echoflow.impl.anthropic.params import AnthropicParams
 from echoflow.impl.anthropic.tools import AnthropicTool
-from echoflow.llm.base_client import Client, StreamEvent, StreamEventType
+from echoflow.llm.base_client import Client, Metadata, StreamEvent, StreamEventType
 from echoflow.llm.base_context import CacheStrategy, LLMContext
 from echoflow.llm.base_messages import Messages, ToolCall
 from echoflow.llm.base_params import Params
@@ -96,7 +96,7 @@ class AnthropicClient(Client):
         tool_id = None
         tool_name = None
         tool_arguments = ""
-        meta = {}
+        meta = Metadata()
 
         async for event in stream:
             logger.log_debug(f"A#### {event}")
@@ -104,7 +104,10 @@ class AnthropicClient(Client):
             if event.type == "message_start":
                 message = event.message
                 usage = message.usage
-                meta["input_usage"] = usage
+                meta.cache_read_tokens = usage.cache_read_input_tokens
+                meta.cache_write_tokens = usage.cache_creation_input_tokens
+                meta.input_text_tokens = usage.input_tokens
+
                 yield StreamEvent(type=StreamEventType.start, data={})
                 continue
 
@@ -147,5 +150,5 @@ class AnthropicClient(Client):
                 yield StreamEvent(type=StreamEventType.stop, data={"stop_reason": stop_reason})
 
                 usage = event.usage
-                meta["output_usage"] = usage  # TODO: CHECK
+                meta.output_text_tokens = usage.output_tokens
                 yield StreamEvent(type=StreamEventType.metadata, data={"metadata": meta})

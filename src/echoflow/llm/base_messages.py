@@ -100,14 +100,12 @@ class StaticMessages(_MergedMessages):
         self._static = []
 
     def _alternate_role(self, role: Literal["user", "assistant", "tool"]) -> bool:
-        print(1111111111111)
         alternated = super()._alternate_role(role)
         if alternated:
             self._static.append(Message(role=role, content=[]))
         return alternated
 
     def add_message(self, message: Message):
-        print(1111111111111)
         super().add_message(message)
         self._static[-1] = self.adapter.adapt(self[-1]) if self.adapter else self[-1]
 
