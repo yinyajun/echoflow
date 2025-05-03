@@ -45,6 +45,18 @@ filterwarnings = []
 local_scheme = "no-local-version"
 fallback_version = "0.0.0-dev"
 
+[tool.ruff]
+exclude = [".git"]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "D", # Docstring rules
+    "I", # Import rules
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.coverage.run]
 command_line = "-m pytest"
