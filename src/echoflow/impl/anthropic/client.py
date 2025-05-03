@@ -1,5 +1,5 @@
 import json
-from dataclasses import field
+from dataclasses import dataclass, field
 from typing import AsyncGenerator, Literal
 
 from echoflow.impl.anthropic.messages import AnthropicDynamicMessages, AnthropicStaticMessages
@@ -7,7 +7,8 @@ from echoflow.impl.anthropic.params import AnthropicParams
 from echoflow.impl.anthropic.tools import AnthropicTool
 from echoflow.llm.base_client import Client, StreamEvent, StreamEventType
 from echoflow.llm.base_context import CacheStrategy, LLMContext
-from echoflow.llm.base_messages import ToolCall
+from echoflow.llm.base_messages import Messages, ToolCall
+from echoflow.llm.base_params import Params
 from echoflow.logger import get_logger
 
 logger = get_logger()
@@ -22,11 +23,16 @@ except ModuleNotFoundError as e:
     raise Exception(f"Missing module: {e}")
 
 
+@dataclass
 class AnthropicContext(LLMContext):
-    params: AnthropicParams
-    system: AnthropicStaticMessages = None  # 路由问题？
-    history: AnthropicStaticMessages = None
-    rag: AnthropicDynamicMessages = None  # 路由问题？
+    params: AnthropicParams = AnthropicParams()
+    system: AnthropicStaticMessages = field(
+        default_factory=AnthropicStaticMessages
+    )  # todo 路由问题？
+    history: AnthropicStaticMessages = field(default_factory=AnthropicStaticMessages)
+    rag: AnthropicDynamicMessages = field(
+        default_factory=AnthropicStaticMessages
+    )  # todo 路由问题？
     tools: list[AnthropicTool] = field(default_factory=list)
 
 

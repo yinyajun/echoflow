@@ -14,7 +14,7 @@ class CacheStrategy:
 
 @dataclass
 class LLMContext:
-    params: Params
+    params: Params = None
     system: Messages = None  # 路由问题？
     history: Messages = None
     rag: Messages = None  # 路由问题？
