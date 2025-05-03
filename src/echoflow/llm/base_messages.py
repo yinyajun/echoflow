@@ -39,6 +39,11 @@ class Messages(ABC, list):
     def add_message(self, message: Message):
         pass
 
+    @property
+    @abstractmethod
+    def value(self) -> list:
+        pass
+
 
 class _MergedMessages(Messages):
     def _alternate_role(self, role: Literal["user", "assistant", "tool"]) -> bool:
@@ -95,17 +100,19 @@ class StaticMessages(_MergedMessages):
         self._static = []
 
     def _alternate_role(self, role: Literal["user", "assistant", "tool"]) -> bool:
+        print(1111111111111)
         alternated = super()._alternate_role(role)
         if alternated:
             self._static.append(Message(role=role, content=[]))
         return alternated
 
     def add_message(self, message: Message):
+        print(1111111111111)
         super().add_message(message)
         self._static[-1] = self.adapter.adapt(self[-1]) if self.adapter else self[-1]
 
     @property
-    def value(self):
+    def value(self) -> list:
         return self._static
 
 
@@ -118,7 +125,7 @@ class DynamicMessages(Messages):
         self.append(message)
 
     @property
-    def value(self):
+    def value(self) -> list:
         res = StaticMessages(self.adapter)
 
         for i, m in enumerate(self):
