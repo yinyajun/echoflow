@@ -35,7 +35,7 @@ class Metadata:
 class LLMResult:
     text: str = ""
     tool_call: Optional[ToolCall] = None
-    metadata: Optional[Metadata] = Metadata()
+    metadata: Optional[Metadata] = field(default_factory=Metadata)
 
 
 class Client:
