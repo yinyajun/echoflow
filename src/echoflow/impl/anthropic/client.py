@@ -25,7 +25,7 @@ except ModuleNotFoundError as e:
 
 @dataclass
 class AnthropicContext(LLMContext):
-    params: AnthropicParams = AnthropicParams()
+    params: AnthropicParams = field(default_factory=AnthropicParams)
     system: AnthropicStaticMessages = field(
         default_factory=AnthropicStaticMessages
     )  # todo 路由问题？
