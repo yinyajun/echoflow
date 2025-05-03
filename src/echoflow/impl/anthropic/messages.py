@@ -1,15 +1,15 @@
 from typing import Literal
 
-from echoflow.logger import get_logger
 from echoflow.llm.base_messages import (
+    DynamicMessages,
     Message,
-    ToolCall,
-    ToolResult,
-    Text,
     MessageAdapter,
     StaticMessages,
-    DynamicMessages
+    Text,
+    ToolCall,
+    ToolResult,
 )
+from echoflow.logger import get_logger
 
 logger = get_logger()
 
@@ -17,8 +17,8 @@ try:
     from anthropic.types import (
         MessageParam,
         TextBlockParam,
+        ToolResultBlockParam,
         ToolUseBlockParam,
-        ToolResultBlockParam
     )
 except ModuleNotFoundError as e:
     logger.log_error(f"Exception: {e}")
@@ -39,9 +39,13 @@ class AnthropicAdapter(MessageAdapter):
             if type(c) == Text:
                 content.append(TextBlockParam(text=c, type="text"))
             elif type(c) == ToolCall:
-                content.append(ToolUseBlockParam(type="tool_use", id=c.id, name=c.name, input=c.input))
+                content.append(
+                    ToolUseBlockParam(type="tool_use", id=c.id, name=c.name, input=c.input)
+                )
             elif type(c) == ToolResult:
-                content.append(ToolResultBlockParam(type="tool_result", tool_use_id=c.id, content=c.content))
+                content.append(
+                    ToolResultBlockParam(type="tool_result", tool_use_id=c.id, content=c.content)
+                )
 
         return MessageParam(role=role, content=content)
 
@@ -71,5 +75,3 @@ class AnthropicStaticMessages(StaticMessages):
 class AnthropicDynamicMessages(DynamicMessages):
     def __init__(self):
         super().__init__(adapter=AnthropicAdapter())
-
-

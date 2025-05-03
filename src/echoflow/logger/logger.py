@@ -2,6 +2,7 @@ from loguru import logger
 
 _logger = None
 
+
 class Logger:
     def log_info(self, message: str):
         raise NotImplemented()
@@ -29,6 +30,7 @@ class LocalLogger(Logger):
     def log_warn(self, message: str):
         logger.warning(message)
 
+
 class TenLogger(Logger):
     def __init__(self, ten_env):
         self.ten_env = ten_env
@@ -52,7 +54,7 @@ def get_logger():
         _logger = LocalLogger()
     return _logger
 
+
 def init_logger(log: Logger):
     global _logger
     _logger = log
-

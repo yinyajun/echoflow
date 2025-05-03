@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from typing import List, Union, Literal, Any
+from dataclasses import dataclass
+from typing import Any, List, Literal, Union
 
 Text = str
 
@@ -25,7 +25,6 @@ class Message:
 
 
 class MessageAdapter(ABC):
-
     @abstractmethod
     def adapt(self, message: Message) -> Any:
         pass
@@ -36,14 +35,12 @@ class MessageAdapter(ABC):
 
 
 class Messages(ABC, list):
-
     @abstractmethod
     def add_message(self, message: Message):
         pass
 
 
 class _MergedMessages(Messages):
-
     def _alternate_role(self, role: Literal["user", "assistant", "tool"]) -> bool:
         if len(self) == 0 or self[-1].role != role:
             self.append(Message(role=role, content=[]))
