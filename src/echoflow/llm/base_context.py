@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 
 from echoflow.llm.base_messages import Messages
-from echoflow.llm.base_params import Params
 from echoflow.llm.base_tools import Tool
 
 
@@ -13,9 +12,17 @@ class CacheStrategy:
 
 
 @dataclass
+class Params:
+    model_id: str
+    max_tokens: int = 1024
+    top_p: float = 0.9
+    temperature: float = 0.8
+
+
+@dataclass
 class LLMContext:
     params: Params = None
-    system: Messages = None  # 路由问题？
+    system: Messages = None  # 路由问题？交给上层
     history: Messages = None
-    rag: Messages = None  # 路由问题？
+    rag: Messages = None  # 路由问题？交给上层
     tools: list[Tool] = field(default_factory=list)

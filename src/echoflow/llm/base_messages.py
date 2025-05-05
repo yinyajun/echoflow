@@ -1,5 +1,6 @@
+import json
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Any, List, Literal, Union
 
 Text = str
@@ -22,6 +23,39 @@ class ToolResult:
 class Message:
     role: Literal["system", "user", "assistant", "tool"]
     content: List[Union[Text, ToolCall, ToolResult]]
+
+
+# class Store(ABC):
+#
+#     @abstractmethod
+#     def save(self, message: "Message"):
+#         pass
+#
+#     @abstractmethod
+#     def load(self) -> List["Message"]:
+#         pass
+#
+#     def close(self):
+#         pass
+#
+#
+# class FileStore(Store):
+#
+#     def __init__(self, file_path: str):
+#         self.file_path = file_path
+#         self.file = open(self.file_path, "a+", encoding="utf-8")  # 打开文件用于追加
+#
+#     def save(self, message: "Message"):
+#         self.file.write(json.dumps(asdict(message)) + "\n")
+#         self.file.flush()
+#
+#     def load(self) -> List["Message"]:
+#         self.file.seek(0)
+#         lines = self.file.readlines()
+#         return [Message(**json.loads(line.strip())) for line in lines]
+#
+#     def close(self):
+#         self.file.close()
 
 
 class MessageAdapter(ABC):

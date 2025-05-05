@@ -8,7 +8,6 @@ from echoflow.impl.anthropic.tools import AnthropicTool
 from echoflow.llm.base_client import Client, Metadata, StreamEvent, StreamEventType
 from echoflow.llm.base_context import CacheStrategy, LLMContext
 from echoflow.llm.base_messages import Messages, ToolCall
-from echoflow.llm.base_params import Params
 from echoflow.logger import get_logger
 
 logger = get_logger()
@@ -26,13 +25,9 @@ except ModuleNotFoundError as e:
 @dataclass
 class AnthropicContext(LLMContext):
     params: AnthropicParams = field(default_factory=AnthropicParams)
-    system: AnthropicStaticMessages = field(
-        default_factory=AnthropicStaticMessages
-    )  # todo 路由问题？
+    system: AnthropicStaticMessages = field(default_factory=AnthropicStaticMessages)
     history: AnthropicStaticMessages = field(default_factory=AnthropicStaticMessages)
-    rag: AnthropicDynamicMessages = field(
-        default_factory=AnthropicStaticMessages
-    )  # todo 路由问题？
+    rag: AnthropicDynamicMessages = field(default_factory=AnthropicStaticMessages)
     tools: list[AnthropicTool] = field(default_factory=list)
 
 

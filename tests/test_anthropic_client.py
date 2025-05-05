@@ -7,6 +7,7 @@ from echoflow.impl.anthropic.messages import (
     AnthropicDynamicMessages,
     AnthropicStaticMessages,
 )
+from echoflow.llm.base_client import StreamEvent, StreamEventType
 from echoflow.llm.base_messages import Message, ToolCall, ToolResult
 
 
@@ -16,21 +17,30 @@ class TestAnthropicClientWithRaw(unittest.IsolatedAsyncioTestCase):
         self.ctx = AnthropicContext()
 
     async def test_stream_generate(self):
+        events = []
         async for event in self.client.stream_generate(self.ctx):
-            print(777, event)
+            events.append(event)
+
+        self.assertTrue(events, "No events were generated")
+        has_start = any(event.type == StreamEventType.start for event in events)
+        has_metadata = any(event.type == StreamEventType.metadata for event in events)
+        has_stop = any(event.type == StreamEventType.stop for event in events)
+
+        self.assertTrue(has_start, "Start event is missing")
+        self.assertTrue(has_metadata, "Metadata event is missing")
+        self.assertTrue(has_stop, "Stop event is missing")
 
 
 async def run():
     client = AnthropicClient(api_key=os.getenv("anthropic_api_key"))
     history = AnthropicStaticMessages()
-    history.add_message(Message(role="user", content=["hello?"]))
+    history.add_message(Message(role="user", content=["hello hello hello"]))
     ctx = AnthropicContext(history=history)
     async for event in client.stream_generate(ctx):
         print(777, event)
 
 
 asyncio.run(run())
-
 
 # 1111111111111
 # 1111111111111
