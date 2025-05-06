@@ -2,13 +2,13 @@ import json
 from dataclasses import dataclass, field
 from typing import AsyncGenerator, Literal
 
-from echoflow.impl.anthropic.messages import AnthropicDynamicMessages, AnthropicStaticMessages
-from echoflow.impl.anthropic.params import AnthropicParams
-from echoflow.impl.anthropic.tools import AnthropicTool
 from echoflow.llm.base_client import Client, Metadata, StreamEvent, StreamEventType
 from echoflow.llm.base_context import CacheStrategy, LLMContext
 from echoflow.llm.base_messages import Messages, ToolCall
 from echoflow.logger import get_logger
+from echoflow.services.anthropic.messages import AnthropicDynamicMessages, AnthropicStaticMessages
+from echoflow.services.anthropic.params import AnthropicParams
+from echoflow.services.anthropic.tools import AnthropicTool
 
 logger = get_logger()
 

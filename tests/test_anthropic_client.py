@@ -2,13 +2,13 @@ import asyncio
 import os
 import unittest
 
-from echoflow.impl.anthropic.client import AnthropicClient, AnthropicContext
-from echoflow.impl.anthropic.messages import (
+from echoflow.llm.base_client import StreamEvent, StreamEventType
+from echoflow.llm.base_messages import Message, ToolCall, ToolResult
+from echoflow.services.anthropic.client import AnthropicClient, AnthropicContext
+from echoflow.services.anthropic.messages import (
     AnthropicDynamicMessages,
     AnthropicStaticMessages,
 )
-from echoflow.llm.base_client import StreamEvent, StreamEventType
-from echoflow.llm.base_messages import Message, ToolCall, ToolResult
 
 
 class TestAnthropicClientWithRaw(unittest.IsolatedAsyncioTestCase):

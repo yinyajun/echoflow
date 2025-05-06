@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from echoflow.llm.base_params import Params
+from echoflow.llm.base_context import Params
 
 
 @dataclass

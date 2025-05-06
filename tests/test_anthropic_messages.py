@@ -1,11 +1,11 @@
 import unittest
 
-from echoflow.impl.anthropic.messages import (
+from echoflow.llm.base_messages import Message, ToolCall, ToolResult
+from echoflow.services.anthropic.messages import (
     AnthropicAdapter,
     AnthropicDynamicMessages,
     AnthropicStaticMessages,
 )
-from echoflow.llm.base_messages import Message, ToolCall, ToolResult
 
 
 class TestAnthropicAdapter(unittest.TestCase):
